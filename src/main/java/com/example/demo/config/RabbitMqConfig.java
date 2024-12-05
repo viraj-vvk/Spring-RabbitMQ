@@ -12,18 +12,28 @@ import org.springframework.context.annotation.Configuration;
 public class RabbitMqConfig {
 
     @Bean
-    public Queue queue() {
-        return new Queue("queue-one");
+    public Queue queueOne() {
+        return new Queue("queueOne");
     }
 
     @Bean
-    public DirectExchange exchange() {
-        return new DirectExchange("direct:exchange-one");
+    public Queue queueTwo() {
+        return new Queue("queueTwo");
     }
 
     @Bean
-    public Binding binding(Queue queue, DirectExchange exchange) {
-        return BindingBuilder.bind(queue).to(exchange).with("direct-exchange-key");
+    public FanoutExchange exchange() {
+        return new FanoutExchange("fanout:exchange");
+    }
+
+    @Bean
+    public Binding bindingOne(Queue queueOne, FanoutExchange exchange) {
+        return BindingBuilder.bind(queueOne).to(exchange);
+    }
+
+    @Bean
+    public Binding bindingTwo(Queue queueTwo, FanoutExchange exchange) {
+        return BindingBuilder.bind(queueTwo).to(exchange);
     }
 
     @Bean
