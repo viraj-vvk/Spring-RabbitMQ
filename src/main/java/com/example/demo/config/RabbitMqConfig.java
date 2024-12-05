@@ -13,27 +13,37 @@ public class RabbitMqConfig {
 
     @Bean
     public Queue queueOne() {
-        return new Queue("queueOne");
+        return new Queue("qone");
     }
 
     @Bean
     public Queue queueTwo() {
-        return new Queue("queueTwo");
+        return new Queue("qtwo");
     }
 
     @Bean
-    public FanoutExchange exchange() {
-        return new FanoutExchange("fanout:exchange");
+    public Queue queueThree() {
+        return new Queue("qthree");
     }
 
     @Bean
-    public Binding bindingOne(Queue queueOne, FanoutExchange exchange) {
-        return BindingBuilder.bind(queueOne).to(exchange);
+    public TopicExchange exchange() {
+        return new TopicExchange("topic:exchange");
     }
 
     @Bean
-    public Binding bindingTwo(Queue queueTwo, FanoutExchange exchange) {
-        return BindingBuilder.bind(queueTwo).to(exchange);
+    public Binding bindingOne(Queue queueOne, TopicExchange exchange) {
+        return BindingBuilder.bind(queueOne).to(exchange).with("*.kone.*");
+    }
+
+    @Bean
+    public Binding bindingTwo(Queue queueTwo, TopicExchange exchange) {
+        return BindingBuilder.bind(queueTwo).to(exchange).with("*.ktwo.*");
+    }
+
+    @Bean
+    public Binding bindingThree(Queue queueThree, TopicExchange exchange) {
+        return BindingBuilder.bind(queueThree).to(exchange).with("#.kthree");
     }
 
     @Bean

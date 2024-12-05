@@ -9,3 +9,13 @@
     "value": "message one"
     }
     }
+- topicExchange request:
+  - {
+    "routingKey": "kone.ktwo.kthree",
+    "exchange": "topic:exchange",
+    "message": {
+    "key": "m-1",
+    "value": "message one"
+    }
+    }
+  - only queueTwo and queueThree will receive message
