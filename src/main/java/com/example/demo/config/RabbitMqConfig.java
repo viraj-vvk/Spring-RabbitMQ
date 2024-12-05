@@ -8,42 +8,44 @@ import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import java.util.Map;
+
 @Configuration
 public class RabbitMqConfig {
 
     @Bean
     public Queue queueOne() {
-        return new Queue("qone");
+        return new Queue("queueOne");
     }
 
     @Bean
     public Queue queueTwo() {
-        return new Queue("qtwo");
+        return new Queue("queueTwo");
     }
 
     @Bean
     public Queue queueThree() {
-        return new Queue("qthree");
+        return new Queue("queueThree");
     }
 
     @Bean
-    public TopicExchange exchange() {
-        return new TopicExchange("topic:exchange");
+    public HeadersExchange exchange() {
+        return new HeadersExchange("header:exchange");
     }
 
     @Bean
-    public Binding bindingOne(Queue queueOne, TopicExchange exchange) {
-        return BindingBuilder.bind(queueOne).to(exchange).with("*.kone.*");
+    public Binding bindingOne(Queue queueOne, HeadersExchange exchange) {
+        return BindingBuilder.bind(queueOne).to(exchange).whereAll(Map.of("value1", "Java", "value2", "javascript")).match();
     }
 
     @Bean
-    public Binding bindingTwo(Queue queueTwo, TopicExchange exchange) {
-        return BindingBuilder.bind(queueTwo).to(exchange).with("*.ktwo.*");
+    public Binding bindingTwo(Queue queueTwo, HeadersExchange exchange) {
+        return BindingBuilder.bind(queueTwo).to(exchange).whereAny(Map.of("value1", "python", "value2", "javascript")).match();
     }
 
     @Bean
-    public Binding bindingThree(Queue queueThree, TopicExchange exchange) {
-        return BindingBuilder.bind(queueThree).to(exchange).with("#.kthree");
+    public Binding bindingThree(Queue queueThree, HeadersExchange exchange) {
+        return BindingBuilder.bind(queueThree).to(exchange).whereAll(Map.of("value1", "javascript", "value2", "Java")).match();
     }
 
     @Bean

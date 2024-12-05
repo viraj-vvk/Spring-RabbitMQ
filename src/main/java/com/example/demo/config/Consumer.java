@@ -7,17 +7,17 @@ import org.springframework.stereotype.Component;
 @Component
 public class Consumer {
 
-    @RabbitListener(queues = "qone")
+    @RabbitListener(queues = "queueOne")
     public void queueOneListener(Message message) {
         System.out.printf("Message from queueOne: %s", message);
     }
 
-    @RabbitListener(queues = "qtwo")
+    @RabbitListener(queues = "queueTwo")
     public void queueTwoListener(Message message) {
         System.out.printf("Message from queueTwo: %s", message);
     }
 
-    @RabbitListener(queues = "qthree")
+    @RabbitListener(queues = "queueThree")
     public void queueThreeListener(Message message) {
         System.out.printf("Message from queueThree: %s", message);
     }
