@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/message")
 public class MessageController {
 
+    private final RabbitTemplate template;
+
     @Autowired
-    private RabbitTemplate template;
+    public MessageController(RabbitTemplate template) {
+        this.template = template;
+    }
 
     @PostMapping
     public String getData(@RequestBody SimpleMessage messageBody) {
